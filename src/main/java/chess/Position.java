@@ -12,6 +12,22 @@ public class Position {
         this.rank = Rank.from(rank);
     }
 
+    public Movement calculateUnitMovement(final Position subtracted) {
+        final int fileDiff = file.value() - subtracted.file.value();
+        final int rankDiff = rank.value() - subtracted.rank.value();
+
+        final int gcd = gcd(Math.min(fileDiff, rankDiff), Math.max(fileDiff, rankDiff));
+
+        return Movement.of(fileDiff / gcd, rankDiff / gcd);
+    }
+
+    private int gcd(final int value1, final int value2) {
+        if (value2 == 0) {
+            return value1;
+        }
+        return gcd(value2, value1 % value2);
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;

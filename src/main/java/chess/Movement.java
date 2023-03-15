@@ -1,25 +1,39 @@
 package chess;
 
-import java.util.function.BiFunction;
+import java.util.Arrays;
 
 public enum Movement {
-    UP((position, times) -> new Position(position.file().value(), position.rank().value() + times)),
-    DOWN((position, times) -> new Position(position.file().value(), position.rank().value() - times)),
-    RIGHT((position, times) -> new Position(position.file().value() + times, position.rank().value())),
-    LEFT((position, times) -> new Position(position.file().value() - times, position.rank().value())),
-    RIGHT_UP((position, times) -> new Position(position.file().value() + times, position.rank().value() + times)),
-    RIGHT_DOWN((position, times) -> new Position(position.file().value() + times, position.rank().value() - times)),
-    LEFT_UP((position, times) -> new Position(position.file().value() - times, position.rank().value() + times)),
-    LEFT_DOWN((position, times) -> new Position(position.file().value() - times, position.rank().value() - times)),
-    ;
+    U(0, 1),
+    D(0, -1),
+    R(1, 0),
+    L(-1, 0),
 
-    private final BiFunction<Position, Integer, Position> moveFunction;
+    UR(1, 1),
+    UL(-1, 1),
+    DR(1, -1),
+    DL(-1, -1),
 
-    Movement(final BiFunction<Position, Integer, Position> moveFunction) {
-        this.moveFunction = moveFunction;
+    UUR(1, 2),
+    UUL(-1, 2),
+    RRU(2, 1),
+    RRD(2, -1),
+    DDR(1, -2),
+    DDL(-1, -2),
+    LLU(-2, 1),
+    LLD(-2, -1);
+
+    private final int file;
+    private final int rank;
+
+    Movement(final int file, final int rank) {
+        this.file = file;
+        this.rank = rank;
     }
 
-    public Position from(Position position, int times) {
-        return moveFunction.apply(position, times);
+    public static Movement of(final int file, final int rank) {
+        return Arrays.stream(Movement.values())
+                     .filter(movement -> movement.file == file && movement.rank == rank)
+                     .findAny()
+                     .orElseThrow(() -> new IllegalArgumentException("이동할 수 없는 방향입니다."));
     }
 }
