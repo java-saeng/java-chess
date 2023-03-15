@@ -1,7 +1,10 @@
 package chess.piece;
 
+import chess.Path;
 import chess.Position;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public abstract class Piece {
@@ -18,7 +21,7 @@ public abstract class Piece {
         return color == Color.BLACK;
     }
 
-    protected abstract Piece moveTo(Position next);
+    protected abstract Map<Piece, Path> moveTo(Position next);
 
     @Override
     public boolean equals(final Object o) {
