@@ -56,4 +56,9 @@ public class Position {
                 ", rank=" + rank +
                 '}';
     }
+
+    public int subRankAndFileAbs(final Position destination){
+        return Math.abs(rank.value() - destination.rank.value())
+                + Math.abs(file.value() - destination.file.value());
+    }
 }
