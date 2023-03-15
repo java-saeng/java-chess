@@ -32,4 +32,12 @@ public class Position {
     public Rank rank() {
         return rank;
     }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "file=" + file +
+                ", rank=" + rank +
+                '}';
+    }
 }
