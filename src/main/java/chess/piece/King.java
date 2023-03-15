@@ -9,6 +9,8 @@ import java.util.function.Predicate;
 
 public class King extends Piece {
 
+    private static final int MOVEMENT_UNIT = 1;
+
     public King(final Color color, final Position position) {
         super(color, position);
     }
@@ -16,22 +18,24 @@ public class King extends Piece {
     @Override
     protected Piece moveTo(final Position next) {
 
-        final boolean canNotMove = Arrays.stream(Movement.values())
-                                         .filter(throwsException())
-                                         .map(movement -> movement.from(position))
-                                         .noneMatch(it -> it.equals(next));
-
-        if (canNotMove) {
+        if (canNotMove(next)) {
             throw new IllegalStateException("King은 8방향 1칸씩만 움직일 수 있습니다.");
         }
 
         return new King(color, next);
     }
 
-    private Predicate<Movement> throwsException() {
+    private boolean canNotMove(final Position next) {
+        return Arrays.stream(Movement.values())
+                     .filter(isMovable())
+                     .map(movement -> movement.from(position, MOVEMENT_UNIT))
+                     .noneMatch(it -> it.equals(next));
+    }
+
+    private Predicate<Movement> isMovable() {
         return movement -> {
             try {
-                movement.from(position);
+                movement.from(position, MOVEMENT_UNIT);
             } catch (NoSuchElementException exception) {
                 return false;
             }
